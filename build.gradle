@@ -1,0 +1,71 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+    id 'org.springframework.boot' version 'latest.release' apply false
+    id 'io.spring.dependency-management' version 'latest.release'
+    id 'io.freefair.lombok' version 'latest.release'
+}
+
+group = 'tythor'
+version = '0.0.1'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-restclient'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-cache'
+    implementation 'org.springframework.boot:spring-boot-starter-hazelcast'
+
+    implementation 'org.springframework.data:spring-data-keyvalue'
+
+    // https://github.com/hazelcast/hazelcast/issues/26546
+    implementation 'com.hazelcast:hazelcast:5.5.0'
+    implementation 'org.redisson:redisson:latest.release'
+
+    implementation 'com.github.luben:zstd-jni:latest.release'
+//    implementation 'com.esotericsoftware:kryo:latest.release'
+
+    implementation 'com.bucket4j:bucket4j-core:latest.release'
+    implementation 'com.bucket4j:bucket4j-redis:latest.release'
+    implementation 'com.bucket4j:bucket4j-hazelcast:latest.release'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+configurations {
+    configureEach {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-micrometer-tracing'
+    }
+}
+
+dependencyManagement {
+    imports {
+        mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+        }
+    }
+}
