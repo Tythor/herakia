@@ -1,0 +1,4 @@
+tythor.herakia.configuration.HerakiaAutoConfiguration
+tythor.herakia.configuration.ExecutorConfig
+tythor.herakia.configuration.JacksonConfig
+tythor.herakia.hazelcast.management.HazelcastManagementConfig
